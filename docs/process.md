@@ -9,7 +9,7 @@
 |---|---|---|---|
 | 0 — Skelet va CI | [R] | `phase-0-scaffold` | `fc7665e` |
 | 1 — Ma'lumotlar qatlami | [R] | `phase-1-data` | `7a3130c` |
-| 2 — Ochiq sayt | [R] | `phase-2-public` | (quyida) |
+| 2 — Ochiq sayt | [R] | `phase-2-public` | `cadd2dd` |
 | 3 — Panel | [ ] | `phase-3-panel` | |
 | 4 — API | [ ] | `phase-4-api` | |
 | 5 — Production | [ ] | `phase-5-prod` | |
