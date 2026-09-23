@@ -7,7 +7,7 @@
 
 | Faza | Holat | Branch | Oxirgi commit |
 |---|---|---|---|
-| 0 — Skelet va CI | [R] | `phase-0-scaffold` | (quyida) |
+| 0 — Skelet va CI | [R] | `phase-0-scaffold` | `fc7665e` |
 | 1 — Ma'lumotlar qatlami | [ ] | `phase-1-data` | |
 | 2 — Ochiq sayt | [ ] | `phase-2-public` | |
 | 3 — Panel | [ ] | `phase-3-panel` | |
