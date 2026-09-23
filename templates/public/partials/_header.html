@@ -1,0 +1,21 @@
+{% load static %}
+<header class="header">
+  <div class="container header__row">
+    <div class="header__logo">azizillo<span>backend</span></div>
+    <div class="header__right">
+      <nav class="header__nav" aria-label="Asosiy">
+        <a href="#projects">Loyihalar</a>
+        <a href="#stack">Stack</a>
+        <a href="#infra">Infra</a>
+        <a href="#contact">Aloqa</a>
+      </nav>
+      {% include "components/_theme_toggle.html" %}
+    </div>
+  </div>
+  <nav class="container header__nav--mobile" aria-label="Asosiy (mobil)">
+    <a href="#projects">Loyihalar</a>
+    <a href="#stack">Stack</a>
+    <a href="#infra">Infra</a>
+    <a href="#contact">Aloqa</a>
+  </nav>
+</header>

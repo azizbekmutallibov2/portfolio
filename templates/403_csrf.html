@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sahifa eskirdi — Azizillo{% endblock %}
+{% block robots %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/public.css' %}">{% endblock %}
+
+{% block content %}
+  <main id="main" class="error-page">
+    <div class="error-page__code">403</div>
+    <p class="error-page__message">Sahifa eskirdi. Sahifani yangilab, qayta yuboring.</p>
+    <a href="{% url 'public:home' %}" class="link">← Bosh sahifa</a>
+  </main>
+{% endblock %}

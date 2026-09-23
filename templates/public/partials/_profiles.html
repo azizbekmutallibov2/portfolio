@@ -1,0 +1,46 @@
+{% load url_tags %}
+{% if site.github_url or site.telegram_url or site.linkedin_url %}
+  <section id="profiles" class="section container" aria-labelledby="profiles-heading">
+    <div class="section__grid">
+      <div class="section__label label">05 / PROFILLAR</div>
+      <div class="section__content">
+        <h2 id="profiles-heading" class="h2 visually-hidden">Profillar</h2>
+        <ul class="profile-list">
+          {% if site.github_url %}
+            <li>
+              <a href="{{ site.github_url }}" target="_blank" rel="noopener noreferrer" class="profile-item row-hover">
+                <span class="profile-item__name">GitHub</span>
+                <span class="profile-item__url">
+                  {{ site.github_url|display_url }}
+                  <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+          {% endif %}
+          {% if site.telegram_url %}
+            <li>
+              <a href="{{ site.telegram_url }}" target="_blank" rel="noopener noreferrer" class="profile-item row-hover">
+                <span class="profile-item__name">Telegram</span>
+                <span class="profile-item__url">
+                  {{ site.telegram_url|display_url }}
+                  <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+          {% endif %}
+          {% if site.linkedin_url %}
+            <li>
+              <a href="{{ site.linkedin_url }}" target="_blank" rel="noopener noreferrer" class="profile-item row-hover">
+                <span class="profile-item__name">LinkedIn</span>
+                <span class="profile-item__url">
+                  {{ site.linkedin_url|display_url }}
+                  <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </section>
+{% endif %}

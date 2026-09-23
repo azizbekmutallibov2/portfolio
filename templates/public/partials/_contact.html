@@ -1,0 +1,44 @@
+<section id="contact" class="section container" aria-labelledby="contact-heading">
+  <div class="section__grid">
+    <div class="section__label label">06 / ALOQA</div>
+    <div class="section__content contact-section">
+      <div class="contact-info">
+        <h2 id="contact-heading" class="h2">Loyiha yoki ish taklifi bormi?</h2>
+        {% if site.contact_phone %}
+          <div class="contact-info__item">
+            <span class="label">TELEFON</span>
+            <a href="tel:{{ site.contact_phone }}">{{ site.contact_phone }}</a>
+          </div>
+        {% endif %}
+        {% if site.contact_email %}
+          <div class="contact-info__item">
+            <span class="label">EMAIL</span>
+            <a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a>
+          </div>
+        {% endif %}
+      </div>
+      <div>
+        {% include "components/_flash.html" %}
+        <form
+          method="post"
+          action="{% url 'public:contact' %}#contact"
+          novalidate
+          class="contact-form"
+        >
+          {% csrf_token %}
+          {% include "components/_field.html" with field=contact_form.name %}
+          {% include "components/_field.html" with field=contact_form.contact %}
+          {% include "components/_field.html" with field=contact_form.message %}
+          <div class="visually-hidden">
+            <label for="{{ contact_form.website.id_for_label }}">Bu maydonni bo'sh qoldiring</label>
+            {{ contact_form.website }}
+          </div>
+          {% if contact_form.non_field_errors %}
+            <div class="flash flash--error" role="status">{{ contact_form.non_field_errors.0 }}</div>
+          {% endif %}
+          <button type="submit" class="btn btn--primary">Yuborish →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

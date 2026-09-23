@@ -1,0 +1,37 @@
+{% load static %}<!DOCTYPE html>
+<html lang="uz" class="no-js" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark light">
+    <title>{% block title %}Azizillo — Python backend dasturchi{% endblock %}</title>
+    <meta
+      name="description"
+      content="{% block description %}Azizillo — Python backend dasturchi. Django, DRF, PostgreSQL, Nginx: loyihalar, stack va deployment.{% endblock %}"
+    >
+    <link rel="canonical" href="https://{{ request.get_host }}/">
+    <meta property="og:title" content="Azizillo — Python backend dasturchi">
+    <meta property="og:description" content="Django, DRF, PostgreSQL, Nginx: loyihalar, stack va deployment.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://{{ request.get_host }}/">
+    <meta property="og:locale" content="uz_UZ">
+    {% block robots %}{% endblock %}
+    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+    <script src="{% static 'js/theme-init.js' %}"></script>
+  </head>
+  <body{% block body_attrs %}{% endblock %}>
+    <a href="#main" class="skip-link">Asosiy kontentga o'tish</a>
+    {% block content %}{% endblock %}
+    <script src="{% static 'js/theme.js' %}" defer></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

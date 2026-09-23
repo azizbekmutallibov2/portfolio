@@ -1,0 +1,27 @@
+<section id="stack" class="section container" aria-labelledby="stack-heading">
+  <div class="section__grid">
+    <div class="section__label label">02 / STACK</div>
+    <div class="section__content">
+      <h2 id="stack-heading" class="h2">Stack</h2>
+      <p class="lead">Kundalik ishlatadigan vositalar, qatlamlar bo'yicha.</p>
+      <table class="stack-table">
+        <thead>
+          <tr>
+            <th scope="col">Qatlam</th>
+            <th scope="col">Texnologiya</th>
+            <th scope="col">Izoh</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in stack %}
+            <tr class="row-hover">
+              <td><span class="stack-table__layer">{{ row.layer }}</span></td>
+              <td><span class="stack-table__tech">{{ row.tech }}</span></td>
+              <td><span class="stack-table__note">{{ row.note }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
