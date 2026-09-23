@@ -1,0 +1,114 @@
+{% extends "panel/base_panel.html" %}
+
+{% block title %}Kontent — Admin{% endblock %}
+{% block breadcrumb %}ADMIN / KONTENT{% endblock %}
+
+{% block panel_content %}
+  <h1 class="fade">Kontent</h1>
+
+  <div class="content-grid">
+    <div class="content-card-list">
+      <div id="hero" class="content-card">
+        <div class="content-card__title label">HERO MATNI</div>
+        <form method="post" action="{% url 'panel:hero-update' %}#hero" class="content-card-list">
+          {% csrf_token %}
+          {% include "components/_field.html" with field=hero_form.hero_line_1 %}
+          {% include "components/_field.html" with field=hero_form.hero_line_2 %}
+          {% include "components/_field.html" with field=hero_form.about_text %}
+          {% include "components/_field.html" with field=hero_form.status_text %}
+          <button type="submit" class="btn btn--primary">Saqlash</button>
+        </form>
+      </div>
+
+      <div id="links" class="content-card">
+        <div class="content-card__title label">PROFIL HAVOLALARI VA ALOQA</div>
+        <form method="post" action="{% url 'panel:links-update' %}#links" class="content-card-list">
+          {% csrf_token %}
+          {% include "components/_field.html" with field=links_form.github_url %}
+          {% include "components/_field.html" with field=links_form.telegram_url %}
+          {% include "components/_field.html" with field=links_form.linkedin_url %}
+          {% include "components/_field.html" with field=links_form.contact_email %}
+          {% include "components/_field.html" with field=links_form.contact_phone %}
+          <button type="submit" class="btn btn--primary">Saqlash</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="content-card-list">
+      <div id="projects" class="content-card">
+        <div class="panel-section-header">
+          <span class="label">LOYIHALAR</span>
+          <a href="{% url 'panel:content' %}#project-form" class="btn">+ Loyiha qo'shish</a>
+        </div>
+        {% if projects %}
+          {% for project in projects %}
+            <div class="project-row row-hover">
+              <span class="project-row__index mono">{{ forloop.counter|stringformat:"02d" }}</span>
+              <div class="project-row__main">
+                <div class="project-row__name">
+                  {{ project.title }}
+                  {% if not project.is_published %}
+                    <span class="tag tag--muted">YASHIRIN</span>
+                  {% endif %}
+                </div>
+                <div class="project-row__stack">{{ project.stack }}</div>
+              </div>
+              <div class="project-row__actions">
+                <a href="{% url 'panel:project-edit' project.pk %}#project-form" class="action-btn">Tahrirlash</a>
+                <form
+                  method="post"
+                  action="{% url 'panel:project-delete' project.pk %}"
+                  data-confirm="Loyiha o'chirilsinmi?"
+                >
+                  {% csrf_token %}
+                  <button type="submit" class="action-btn">O'chirish</button>
+                </form>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="messages-table__empty">Hali loyiha yo'q.</p>
+        {% endif %}
+      </div>
+
+      <div id="project-form" class="content-card">
+        <div class="content-card__title label">
+          {% if editing_project %}
+            TAHRIRLASH · {{ editing_project.title|upper }}
+          {% else %}
+            YANGI LOYIHA
+          {% endif %}
+        </div>
+        <form
+          method="post"
+          action="{% if editing_project %}{% url 'panel:project-edit' editing_project.pk %}{% else %}{% url 'panel:project-create' %}{% endif %}#project-form"
+        >
+          {% csrf_token %}
+          <div class="form-grid">
+            {% include "components/_field.html" with field=project_form.title %}
+            {% include "components/_field.html" with field=project_form.tag %}
+            {% include "components/_field.html" with field=project_form.stack %}
+            {% include "components/_field.html" with field=project_form.order %}
+            {% include "components/_field.html" with field=project_form.problem %}
+            {% include "components/_field.html" with field=project_form.solution %}
+            {% include "components/_field.html" with field=project_form.role %}
+            <div class="checkbox-field">
+              {{ project_form.is_published }}
+              <label for="{{ project_form.is_published.id_for_label }}">
+                {{ project_form.is_published.label }}
+              </label>
+            </div>
+            {% include "components/_field.html" with field=project_form.repo_url %}
+            {% include "components/_field.html" with field=project_form.demo_url %}
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary">Saqlash</button>
+            {% if editing_project %}
+              <a href="{% url 'panel:content' %}" class="btn">Bekor qilish</a>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

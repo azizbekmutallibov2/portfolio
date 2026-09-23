@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Kirish — Admin panel{% endblock %}
+{% block robots %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="login">
+    <div class="login__brand">
+      <div class="login__brand-header">azizillo<span>admin</span></div>
+      <div class="login__brand-middle fade">
+        <span class="label">BOSHQARUV PANELI</span>
+        <div class="display">Kontent.</div>
+        <div class="display login__brand-line2">Xabarlar.</div>
+      </div>
+      <div class="login__brand-footer">Faqat sayt egasi uchun.</div>
+    </div>
+    <div class="login__form-side">
+      <div class="login__top">
+        {% include "components/_theme_toggle.html" %}
+      </div>
+      <div class="login__form-wrap">
+        <div class="login__form fade d1">
+          <div>
+            <h1>Kirish</h1>
+            <p class="body-text">Admin panelga kirish uchun ma'lumotlarni kiriting.</p>
+          </div>
+          {% if form.non_field_errors %}
+            <div class="flash flash--error" role="status">{{ form.non_field_errors.0 }}</div>
+          {% endif %}
+          <form method="post" class="login__form-fields">
+            {% csrf_token %}
+            {% include "components/_field.html" with field=form.username %}
+            {% include "components/_field.html" with field=form.password %}
+            <button type="submit" class="btn btn--primary">Kirish</button>
+          </form>
+          <a href="{% url 'public:home' %}" class="link mono login__back">← Saytga qaytish</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

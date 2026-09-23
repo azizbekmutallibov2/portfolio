@@ -211,6 +211,11 @@ p {
   padding: 3px 8px;
 }
 
+.tag--muted {
+  color: var(--fg-3);
+  border-color: var(--fg-3);
+}
+
 @media (max-width: 767px) {
   .tag {
     font-size: 10px;

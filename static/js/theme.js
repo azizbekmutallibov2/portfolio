@@ -24,4 +24,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     applyPressedState();
   });
+
+  var secretTrigger = toggle.querySelector("[data-secret-tap]");
+  if (secretTrigger) {
+    var tapCount = 0;
+    var resetTimer = null;
+    var tapThreshold = 7;
+
+    secretTrigger.addEventListener("click", function () {
+      tapCount += 1;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(function () {
+        tapCount = 0;
+      }, 2500);
+
+      if (tapCount >= tapThreshold) {
+        tapCount = 0;
+        window.location.href = secretTrigger.getAttribute("data-secret-tap");
+      }
+    });
+  }
 });

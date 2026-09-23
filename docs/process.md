@@ -10,7 +10,7 @@
 | 0 — Skelet va CI | [R] | `phase-0-scaffold` | `fc7665e` |
 | 1 — Ma'lumotlar qatlami | [R] | `phase-1-data` | `7a3130c` |
 | 2 — Ochiq sayt | [R] | `phase-2-public` | `cadd2dd` |
-| 3 — Panel | [ ] | `phase-3-panel` | |
+| 3 — Panel | [R] | `phase-3-panel` | (quyida) |
 | 4 — API | [ ] | `phase-4-api` | |
 | 5 — Production | [ ] | `phase-5-prod` | |
 | 6 — Bildirishnoma va backup (ixtiyoriy) | [ ] | `phase-6-extras` | |
@@ -142,6 +142,46 @@ Belgilar: `[ ]` boshlanmagan · `[~]` jarayonda · `[R]` review kutyapti · `[x]
 
 **Ma'lum muammolar / keyinga qoldirilgan:**
 - `docs/design/*.dc.html` fayllari hali repo'ga yuklanmagan (faqat vizual reference, shuning uchun ularsiz ham davom etildi).
+
+**Review tuzatishlari:** (review'dan keyin to'ldiriladi)
+- ...
+
+---
+
+## Faza 3 — Panel
+**Holat:** [R]
+
+**Qilindi:**
+- `StaffAuthenticationForm` — faqat `is_staff` foydalanuvchilar kira oladi, xato matni har doim bir xil ("Login yoki parol noto'g'ri.") — noto'g'ri parol va staff bo'lmagan foydalanuvchi uchun ajratib bo'lmaydi.
+- `staff_required` decorator: anonim → login sahifasiga redirect (`?next=`), staff bo'lmagan → 403.
+- Dashboard: xabar/loyiha sonlari, so'nggi 10 xabar.
+- Xabarlar ro'yxati (20 tadan sahifalash) va xabar sahifasi (ochilganda avtomatik "o'qilgan" belgilanadi, idempotent) + o'chirish (POST, tasdiqlash bilan).
+- Kontent sahifasi: Hero matni formasi, Profil havolalari formasi (sxemasiz URL'ga avtomatik `https://` qo'shiladi, keyin `content.validators` bilan tekshiriladi), Loyihalar ro'yxati + qo'shish/tahrirlash/o'chirish.
+- **Qo'shimcha (spec'dan tashqari, sayt egasining so'roviga ko'ra): yashirin admin kirish.** Tema almashtirgichidagi "DARK" yozuviga 7 marta ketma-ket bosilsa (2.5s oynada), `/panel/login/`ga o'tkaziladi. Footer'da yoki boshqa hech qayerda ko'rinadigan admin havolasi yo'q — bu component-spec.md §11'dagi "Footer'dagi Admin havolasi olib tashlandi" qarorini buzmaydi, faqat qo'shimcha yashirin kirish yo'li qo'shadi.
+- Qo'lda brauzerda tekshirildi: kirish, dashboard, kontent (hero/havolalar/loyiha tahrirlash formalari to'g'ri to'ldirilgan holda ochiladi), yashirin trigger — barchasi ishladi.
+
+**Asosiy fayllar:**
+- `apps/panel/forms.py::StaffAuthenticationForm` — bitta xato matni, ikkala rad etish sababi uchun
+- `apps/panel/forms.py::LinksForm` — `clean_github_url`/`clean_telegram_url`/`clean_linkedin_url`da sxema qo'shish + validatsiya
+- `static/js/theme.js` — yashirin 7-marta-bosish trigeri (`data-secret-tap` atributi, Django `{% url %}` orqali beriladi, JS'da hardcode qilinmagan)
+- `apps/panel/views.py::_content_context` — hero/links/project formalarini bitta joyda yig'adi (yangi/tahrirlash holatlari uchun umumiy)
+
+**DoD natijasi:**
+- `ruff check .` / `ruff format --check .` — All checks passed!
+- `lint-imports` — 2 kept, 0 broken
+- `makemigrations --check --dry-run` — No changes detected (panel modelsiz interfeys app)
+- `check --deploy --fail-level WARNING` — no issues
+- `pytest --cov=apps --cov-fail-under=85` — 143 passed, coverage 99.84%
+- Qo'lda: brauzerda to'liq oqim sinaldi (kirish → dashboard → kontent → loyiha tahrirlash → chiqish)
+
+**Spec'dan chetlanish:**
+- **Yashirin admin kirish (7 marta "DARK" bosish) qo'shildi** — component-spec.md'da yo'q, sayt egasining to'g'ridan-to'g'ri so'rovi bilan qo'shildi. Xavfsizlikka ta'siri yo'q: bu shunchaki UI qulayligi, chunki `/panel/login/` baribir to'g'ridan-to'g'ri URL orqali ham ochiladi (robots.txt uni indekslashdan man qiladi, lekin URL yashirin emas — faqat oddiy foydalanuvchi tasodifan topmasligi uchun).
+
+**Savollar (review uchun):**
+- yo'q
+
+**Ma'lum muammolar / keyinga qoldirilgan:**
+- Superuser/parol hali yaratilmagan (test uchun yaratilgan `admin` foydalanuvchisi tekshiruvdan so'ng o'chirildi). Productionga chiqishdan oldin `createsuperuser` bilan haqiqiy hisob yaratilishi kerak (Faza 5).
 
 **Review tuzatishlari:** (review'dan keyin to'ldiriladi)
 - ...
