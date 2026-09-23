@@ -1,0 +1,24 @@
+[importlinter]
+root_packages =
+    apps
+
+[importlinter:contract:domain-does-not-import-interfaces]
+name = Domain and base apps must not import interface apps
+type = forbidden
+source_modules =
+    apps.core
+    apps.users
+    apps.content
+    apps.contact
+forbidden_modules =
+    apps.public
+    apps.panel
+    apps.api
+
+[importlinter:contract:interfaces-independent]
+name = Interface apps are independent of each other
+type = independence
+modules =
+    apps.public
+    apps.panel
+    apps.api

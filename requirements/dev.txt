@@ -1,0 +1,6 @@
+-r base.txt
+pytest<9
+pytest-django
+pytest-cov
+ruff
+import-linter
