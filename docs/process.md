@@ -8,7 +8,7 @@
 | Faza | Holat | Branch | Oxirgi commit |
 |---|---|---|---|
 | 0 — Skelet va CI | [R] | `phase-0-scaffold` | `fc7665e` |
-| 1 — Ma'lumotlar qatlami | [ ] | `phase-1-data` | |
+| 1 — Ma'lumotlar qatlami | [R] | `phase-1-data` | (quyida) |
 | 2 — Ochiq sayt | [ ] | `phase-2-public` | |
 | 3 — Panel | [ ] | `phase-3-panel` | |
 | 4 — API | [ ] | `phase-4-api` | |
@@ -60,6 +60,46 @@ Belgilar: `[ ]` boshlanmagan · `[~]` jarayonda · `[R]` review kutyapti · `[x]
 
 **Ma'lum muammolar / keyinga qoldirilgan:**
 - `docker-compose.yml` shu loyiha uchun umuman yaratilmaydi (yuqoridagi qarorga qarang).
+
+**Review tuzatishlari:** (review'dan keyin to'ldiriladi)
+- ...
+
+---
+
+## Faza 1 — Ma'lumotlar qatlami
+**Holat:** [R]
+
+**Qilindi:**
+- `content.SiteSettings` (singleton, `CheckConstraint`) va `content.Project` modellari, `database.md` §3-4 bo'yicha.
+- `contact.ContactMessage` modeli, §5 bo'yicha (IP xesh, rate-limit uchun index).
+- Validatorlar: `content.validators` (github/telegram/linkedin URL), `contact.validators.validate_contact` (email yoki telefon).
+- Selectorlar: `content.selectors` (`site_settings_get`, `project_list`, `project_get`, `project_counts`), `contact.selectors` (`message_list`, `message_get`, `message_counts`, `message_recent_count`).
+- Servislar: `content.services` (`site_settings_update`, `project_create`, `project_update`, `project_delete`, `normalize_stack`), `contact.services` (`message_create` — rate-limit bilan, `message_mark_read`, `message_delete`).
+- `python manage.py seed_content` — idempotent (TuitDorm + OKJ placeholder bilan).
+- Migratsiyalar: `content.0001_initial`, `content.0002_create_site_settings` (data migration), `contact.0001_initial`.
+- Har bir app uchun `tests/factories.py` (`make_project`, `make_message`).
+
+**Asosiy fayllar:**
+- `apps/content/services.py` — slug generatsiyasi (`slugify` + takrorlanish hisoblagichi), `normalize_stack`
+- `apps/contact/services.py` — `message_create` (HMAC IP xesh, soatlik rate-limit)
+- `apps/content/management/commands/seed_content.py` — `get_or_create`/`update_or_create` bilan idempotent
+
+**DoD natijasi:**
+- `ruff check .` — All checks passed!
+- `ruff format --check .` — barcha fayllar formatlangan
+- `lint-imports` — 2 kept, 0 broken
+- `makemigrations --check --dry-run` — No changes detected
+- `pytest --cov=apps --cov-fail-under=85` — 92 passed, coverage 99.72%
+- `seed_content` ikki marta ishga tushirildi (lokal DB'da qo'lda ham, testda ham) — dublikat yo'q, qo'lda o'zgartirilgan `hero_line_1` saqlanib qoldi.
+
+**Spec'dan chetlanish:**
+- `project_create`da `problem`, `solution`, `role`, `stack` uchun `""` default olib tashlandi (majburiy keyword qilindi). Sabab: bu maydonlar modelda `blank=False`, shuning uchun bo'sh default bilan chaqirilsa `full_clean()` doim `ValidationError` berar edi — default amaliy jihatdan ishlamas edi. `database.md`dagi funksiya imzosida bu maydonlar uchun default ko'rsatilmagan, shuning uchun bu spec'ga zid emas, aniqlashtirish edi.
+
+**Savollar (review uchun):**
+- `validate_telegram_url` faqat host'ni tekshiradi (`t.me`), yo'lni (`/username`) tekshirmaydi — spec faqat "host t.me" deb yozgan, github/linkedin'dan farqli o'laroq yo'l talabini keltirmagan. Shunday qoldirildimi, yoki bo'sh yo'lni (`https://t.me/`) ham rad etish kerakmi?
+
+**Ma'lum muammolar / keyinga qoldirilgan:**
+- OKJ loyihasining `problem`/`role` maydonlari hali `[TO'LDIRING: ...]` placeholder holatida (`seed_content.py`) — `is_published=False`, panelda to'ldirilib yoqiladi (Faza 3).
 
 **Review tuzatishlari:** (review'dan keyin to'ldiriladi)
 - ...
