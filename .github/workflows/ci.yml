@@ -49,7 +49,7 @@ jobs:
       - name: check --deploy
         env:
           DJANGO_SETTINGS_MODULE: config.settings.prod
-          DJANGO_SECRET_KEY: ci-test-secret-key
+          DJANGO_SECRET_KEY: ci-only-throwaway-secret-key-that-is-long-enough-1234567890
           DJANGO_ALLOWED_HOSTS: example.com
           DJANGO_CSRF_TRUSTED_ORIGINS: https://example.com
         run: python manage.py check --deploy --fail-level WARNING
