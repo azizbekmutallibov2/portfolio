@@ -1,0 +1,44 @@
+{% extends "panel/base_panel.html" %}
+
+{% block title %}Xabar — Admin{% endblock %}
+{% block breadcrumb %}ADMIN / XABARLAR / #{{ message.pk }}{% endblock %}
+
+{% block panel_content %}
+  <h1 class="fade">{{ message.name }}</h1>
+
+  <div class="message-meta fade d1">
+    <div class="message-meta__item">
+      <span class="label">ALOQA</span>
+      {% if "@" in message.contact %}
+        <a href="mailto:{{ message.contact }}" class="link">{{ message.contact }}</a>
+      {% else %}
+        <a href="tel:{{ message.contact }}" class="link">{{ message.contact }}</a>
+      {% endif %}
+    </div>
+    <div class="message-meta__item">
+      <span class="label">VAQT</span>
+      <span>{{ message.created_at|date:"d.m.Y H:i" }}</span>
+    </div>
+    <div class="message-meta__item">
+      <span class="label">HOLAT</span>
+      <span>O'qilgan</span>
+    </div>
+  </div>
+
+  <div class="fade d2">
+    <span class="label">XABAR</span>
+    <p class="message-body">{{ message.body }}</p>
+  </div>
+
+  <div class="panel-actions">
+    <a href="{% url 'panel:messages' %}" class="btn">← Xabarlarga qaytish</a>
+    <form
+      method="post"
+      action="{% url 'panel:message-delete' message.pk %}"
+      data-confirm="Xabar o'chirilsinmi?"
+    >
+      {% csrf_token %}
+      <button type="submit" class="btn">O'chirish</button>
+    </form>
+  </div>
+{% endblock %}

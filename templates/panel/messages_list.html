@@ -1,0 +1,21 @@
+{% extends "panel/base_panel.html" %}
+
+{% block title %}Xabarlar — Admin{% endblock %}
+{% block breadcrumb %}ADMIN / XABARLAR{% endblock %}
+
+{% block panel_content %}
+  <h1 class="fade">Xabarlar</h1>
+  {% include "panel/partials/_messages_table.html" with rows=page_obj %}
+
+  {% if page_obj.has_other_pages %}
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="link">← Oldingi</a>
+      {% endif %}
+      <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="link">Keyingi →</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,5 +1,9 @@
 <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
   <span class="visually-hidden">Light rejim</span>
-  <span class="theme-toggle__opt theme-toggle__opt--dark" aria-hidden="true">DARK</span>
+  <span
+    class="theme-toggle__opt theme-toggle__opt--dark"
+    data-secret-tap="{% url 'panel:login' %}"
+    aria-hidden="true"
+  >DARK</span>
   <span class="theme-toggle__opt theme-toggle__opt--light" aria-hidden="true">LIGHT</span>
 </button>

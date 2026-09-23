@@ -1,0 +1,26 @@
+{% if rows %}
+  <div class="messages-table">
+    <div class="messages-table__head">
+      <span>ISM</span>
+      <span>TELEFON / EMAIL</span>
+      <span>XABAR</span>
+      <span>VAQT</span>
+    </div>
+    {% for message in rows %}
+      <a href="{% url 'panel:message-detail' message.pk %}" class="message-row row-hover">
+        <span class="message-row__name">
+          {% if not message.is_read %}
+            <span class="message-row__unread-dot" aria-hidden="true"></span>
+            <span class="visually-hidden">O'qilmagan</span>
+          {% endif %}
+          {{ message.name }}
+        </span>
+        <span class="message-row__contact">{{ message.contact }}</span>
+        <span class="message-row__body">{{ message.body }}</span>
+        <span class="message-row__time">{{ message.created_at|date:"d.m.Y H:i" }}</span>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="messages-table__empty">Hali xabar yo'q.</p>
+{% endif %}

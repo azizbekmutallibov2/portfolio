@@ -1,0 +1,36 @@
+{% extends "panel/base_panel.html" %}
+
+{% block title %}Dashboard — Admin{% endblock %}
+{% block breadcrumb %}ADMIN / DASHBOARD{% endblock %}
+
+{% block panel_content %}
+  <h1 class="fade">Dashboard</h1>
+
+  <div class="stat-grid fade d1">
+    <div class="stat-cell">
+      <span class="label">KELGAN XABARLAR</span>
+      <span class="stat-cell__value">{{ message_counts.total }}</span>
+      {% if message_counts.unread %}
+        <span class="stat-cell__hint stat-cell__hint--accent">{{ message_counts.unread }} ta o'qilmagan</span>
+      {% else %}
+        <span class="stat-cell__hint">Hammasi o'qilgan</span>
+      {% endif %}
+    </div>
+    <div class="stat-cell">
+      <span class="label">LOYIHALAR</span>
+      <span class="stat-cell__value">{{ project_counts.total }}</span>
+      <span class="stat-cell__hint">{{ project_counts.published }} tasi saytda</span>
+    </div>
+  </div>
+
+  <div class="fade d2">
+    <div class="panel-section-header">
+      <span class="label">SO'NGGI XABARLAR</span>
+      <div class="panel-section-header__actions">
+        <a href="{% url 'panel:messages' %}" class="btn">Barcha xabarlar →</a>
+        <a href="{% url 'panel:content' %}" class="btn">Loyihalarni boshqarish →</a>
+      </div>
+    </div>
+    {% include "panel/partials/_messages_table.html" with rows=recent_messages %}
+  </div>
+{% endblock %}

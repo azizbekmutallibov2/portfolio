@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block robots %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+  {% block panel_extra_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+  <div class="panel">
+    <aside class="panel__sidebar">
+      <div class="panel__brand">azizillo<span>admin</span></div>
+      <nav class="panel__nav" aria-label="Admin">
+        <a href="{% url 'panel:dashboard' %}" {% if active_nav == "dashboard" %}aria-current="page"{% endif %}>Dashboard</a>
+        <a href="{% url 'panel:messages' %}" {% if active_nav == "messages" %}aria-current="page"{% endif %}>Xabarlar</a>
+        <a href="{% url 'panel:content' %}#projects" {% if active_nav == "content" %}aria-current="page"{% endif %}>Loyihalar</a>
+        <a href="{% url 'panel:content' %}#links">Profil havolalari</a>
+        <a href="{% url 'panel:content' %}#hero">Hero matni</a>
+      </nav>
+      <div class="panel__nav-bottom">
+        <a href="{% url 'public:home' %}">Saytga qaytish</a>
+        <form method="post" action="{% url 'panel:logout' %}" class="panel__logout-form">
+          {% csrf_token %}
+          <button type="submit">Chiqish</button>
+        </form>
+      </div>
+    </aside>
+    <div class="panel__main">
+      <div class="panel__topbar">
+        <span class="panel__breadcrumb">{% block breadcrumb %}ADMIN{% endblock %}</span>
+        {% include "components/_theme_toggle.html" %}
+      </div>
+      <main id="main" class="panel__content">
+        {% include "components/_flash.html" %}
+        {% block panel_content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  <script src="{% static 'js/panel.js' %}" defer></script>
+{% endblock %}

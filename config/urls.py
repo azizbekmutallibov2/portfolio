@@ -7,6 +7,7 @@ from apps.public.sitemaps import sitemaps
 
 urlpatterns = [
     path("", include("apps.public.urls")),
+    path("panel/", include("apps.panel.urls")),
     path("api/v1/", include("config.api_urls")),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
 ]
