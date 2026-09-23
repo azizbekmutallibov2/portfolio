@@ -11,7 +11,7 @@
 | 1 — Ma'lumotlar qatlami | [R] | `phase-1-data` | `7a3130c` |
 | 2 — Ochiq sayt | [R] | `phase-2-public` | `cadd2dd` |
 | 3 — Panel | [R] | `phase-3-panel` | `b8a8a6c` |
-| 4 — API | [ ] | `phase-4-api` | |
+| 4 — API | [R] | `phase-4-api` | `04528c5` |
 | 5 — Production | [ ] | `phase-5-prod` | |
 | 6 — Bildirishnoma va backup (ixtiyoriy) | [ ] | `phase-6-extras` | |
 
@@ -182,6 +182,42 @@ Belgilar: `[ ]` boshlanmagan · `[~]` jarayonda · `[R]` review kutyapti · `[x]
 
 **Ma'lum muammolar / keyinga qoldirilgan:**
 - Superuser/parol hali yaratilmagan (test uchun yaratilgan `admin` foydalanuvchisi tekshiruvdan so'ng o'chirildi). Productionga chiqishdan oldin `createsuperuser` bilan haqiqiy hisob yaratilishi kerak (Faza 5).
+
+**Review tuzatishlari:** (review'dan keyin to'ldiriladi)
+- ...
+
+---
+
+## Faza 4 — API
+**Holat:** [R]
+
+**Qilindi:**
+- `apps/api/serializers.py`: `ProjectOutputSerializer` (`slug, title, tag, tag_label, problem, solution, role, stack (list[str]), repo_url, demo_url` — `tag_label` `get_tag_display`'dan, `stack` `Project.stack_items`'dan), `ContactCreateInputSerializer` (`name, contact, message`; `contact` `apps.contact.validators.validate_contact` bilan, `apps.public.forms.ContactForm` bilan bir xil qoida).
+- `apps/api/views.py`: HackSoft uslubida `APIView` asosidagi `ProjectListAPIView` (`GET /api/v1/projects/`, faqat published, `content.selectors.project_list`), `ProjectDetailAPIView` (`GET /api/v1/projects/<slug>/`, topilmasa `Http404`), `ContactCreateAPIView` (`POST /api/v1/contact/`, `contact.services.message_create` chaqiradi, `RateLimitExceeded` → `429`). Ruxsat berilmagan metodlar DRF'ning standart `405`'iga tushadi (class'da faqat kerakli metod aniqlangan).
+- `config/api_urls.py`ga uchala yo'l qo'shildi: `api:project-list`, `api:project-detail`, `api:contact-create` (`api:health` Faza 0'dan saqlanib qoldi).
+- `apps/public/tests/test_guards.py::test_infra_endpoints_are_real` yoqildi (Faza 2'da `static_content.INFRA_ENDPOINTS` endi mavjud bo'lgan endpointlarga ishora qiladi): har bir yo'l `resolve()` bo'ladi va `namespace:url_name` mos keladi (`{slug}` → `sample`).
+- `apps/api/tests/test_settings.py::test_prod_settings__renderer_is_json_only` — `config.settings.prod` import qilinib, `REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"]` faqat `JSONRenderer` ekanligi tekshiriladi (guard, spec §8.3 talabi).
+
+**Asosiy fayllar:**
+- `apps/api/serializers.py` — `InputSerializer`/`OutputSerializer` juftligi (HackSoft uslubi)
+- `apps/api/views.py` — `ContactCreateAPIView.post` (serializer validatsiya → `message_create` → `RateLimitExceeded` tutish)
+- `config/api_urls.py` — barcha `/api/v1/` yo'llari
+
+**DoD natijasi:**
+- `ruff check .` / `ruff format --check .` — All checks passed!
+- `lint-imports` — 2 kept, 0 broken
+- `makemigrations --check --dry-run` — No changes detected (api modelsiz interfeys app)
+- `check --deploy --fail-level WARNING` (prod sozlamalari) — no issues
+- `pytest --cov=apps --cov-fail-under=85` — barcha testlar o'tdi, umumiy coverage 99.71%
+
+**Spec'dan chetlanish:**
+- yo'q — endpointlar, javob shakli va test ro'yxati `architecture.md` §8.3 va §15 (Faza 4) bilan bir xil.
+
+**Savollar (review uchun):**
+- yo'q
+
+**Ma'lum muammolar / keyinga qoldirilgan:**
+- yo'q
 
 **Review tuzatishlari:** (review'dan keyin to'ldiriladi)
 - ...
