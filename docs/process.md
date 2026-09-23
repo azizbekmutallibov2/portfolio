@@ -9,7 +9,7 @@
 |---|---|---|---|
 | 0 — Skelet va CI | [R] | `phase-0-scaffold` | `fc7665e` |
 | 1 — Ma'lumotlar qatlami | [R] | `phase-1-data` | `7a3130c` |
-| 2 — Ochiq sayt | [ ] | `phase-2-public` | |
+| 2 — Ochiq sayt | [R] | `phase-2-public` | `cadd2dd` |
 | 3 — Panel | [ ] | `phase-3-panel` | |
 | 4 — API | [ ] | `phase-4-api` | |
 | 5 — Production | [ ] | `phase-5-prod` | |
@@ -100,6 +100,48 @@ Belgilar: `[ ]` boshlanmagan · `[~]` jarayonda · `[R]` review kutyapti · `[x]
 
 **Ma'lum muammolar / keyinga qoldirilgan:**
 - OKJ loyihasining `problem`/`role` maydonlari hali `[TO'LDIRING: ...]` placeholder holatida (`seed_content.py`) — `is_published=False`, panelda to'ldirilib yoqiladi (Faza 3).
+
+**Review tuzatishlari:** (review'dan keyin to'ldiriladi)
+- ...
+
+---
+
+## Faza 2 — Ochiq sayt
+**Holat:** [R]
+
+**Qilindi:**
+- `base.html`, `static/css/tokens.css` (ranglar, tipografiya, breakpointlar), `static/css/base.css` (komponentlar: `.btn`, `.tag`, `.field`, `.flash`, `.theme-toggle`, `.pulse-dot`, `.cursor`, harakatlar), `static/css/public.css` (bo'lim darajasidagi stillar).
+- Barcha 7 bo'lim (`_header`, `_hero`, `_projects`, `_stack`, `_infra`, `_education`, `_profiles`, `_contact`, `_footer`) — desktop va mobil uchun component-spec.md §7 bo'yicha.
+- `apps/public/static_content.py` — Stack, Infra tugunlari/endpointlar/loglar, Ta'lim (frozen dataclass'lar).
+- `apps/public/forms.py` — `ContactForm` (oddiy `forms.Form`, honeypot, aria-invalid).
+- `apps/public/views.py` — `home`, `contact_submit` (rate-limit, honeypot, xato holatlari), `robots`.
+- `apps/public/sitemaps.py`, `config/urls.py`ga ulash.
+- Tema almashtirgich: `theme-init.js` (sinxron, `<head>`da) + `theme.js` (defer).
+- Xato sahifalari: `404.html`, `403.html`, `403_csrf.html`, `500.html` (mustaqil).
+- Guard test: `test_templates_have_no_inline_styles_or_scripts` (barcha shablonlar tekshirildi, 0 ta topildi).
+
+**Asosiy fayllar:**
+- `templates/public/partials/_contact.html` — forma + honeypot + rate-limit xatosi
+- `apps/public/views.py::build_home_context` — barcha bo'lim ma'lumotlarini bitta joyda yig'adi
+- `static/css/base.css` — `.lead { margin-top: 16px }` orqali h2+lead oralig'i (inline style ishlatilmagan)
+
+**DoD natijasi:**
+- `ruff check .` / `ruff format --check .` — All checks passed!
+- `lint-imports` — 2 kept, 0 broken
+- `makemigrations --check --dry-run` — No changes detected
+- `check --deploy --fail-level WARNING` — no issues
+- `pytest --cov=apps --cov-fail-under=85` — 106 passed, coverage 99.65%
+- Qo'lda: `runserver` orqali brauzerda ko'rib chiqildi (dark va light rejim, barcha bo'limlar) — vizual jihatdan dizaynga mos.
+
+**Spec'dan chetlanish:**
+- **`test_infra_endpoints_are_real` guard testi Faza 4'ga qoldirildi.** `static_content.INFRA_ENDPOINTS` `api:project-list`, `api:project-detail`, `api:contact-create` nomlariga ishora qiladi, lekin bu endpointlar hali yozilmagan (faqat `api:health` Faza 0'da bor). Testni hozir yozish muqarrar muvaffaqiyatsizlikka olib kelardi. `apps/public/tests/test_guards.py`da izoh qoldirildi.
+- Panel hali yo'qligi sababli `config/urls.py`da faqat `public.urls` + `api_urls` + `sitemap` ulangan; `panel/` yo'li Faza 3'da qo'shiladi.
+
+**Savollar (review uchun):**
+- Mobil (390px) va planshet (768px) breakpointlarini avtomatlashtirilgan brauzer orqali skrinshot qila olmadim (muhitning oyna o'lchamini o'zgartirish cheklovi tufayli) — CSS qoidalari yozilgan va ko'rib chiqilgan, lekin vizual tasdiq yo'q. Kerak bo'lsa, real qurilmada/DevTools'da tekshirib ko'rishingizni so'rayman.
+
+**Ma'lum muammolar / keyinga qoldirilgan:**
+- `docs/design/*.dc.html` fayllari hali repo'ga yuklanmagan (faqat vizual reference, shuning uchun ularsiz ham davom etildi).
 
 **Review tuzatishlari:** (review'dan keyin to'ldiriladi)
 - ...

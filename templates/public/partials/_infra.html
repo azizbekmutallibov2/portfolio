@@ -1,0 +1,59 @@
+<section id="infra" class="section container" aria-labelledby="infra-heading">
+  <div class="section__grid">
+    <div class="section__label label">03 / INFRA</div>
+    <div class="section__content">
+      <h2 id="infra-heading" class="h2">Infra / Deployment</h2>
+      <p class="lead">
+        So'rov mijozdan bazagacha shu yo'ldan o'tadi. Shu sayt ham aynan shu yo'lda ishlaydi —
+        server WebDock'dagi Ubuntu VPS, uni o'zim sozlaganman.
+      </p>
+
+      <ol class="infra-diagram" aria-label="So'rov yo'li">
+        <li class="infra-node infra-node--client">
+          <span class="infra-node__index" aria-hidden="true">{{ infra_client.index }}</span>
+          <div class="infra-node__text">
+            <span class="infra-node__name">{{ infra_client.name }}</span>
+            <span class="infra-node__sub">{{ infra_client.sub }}</span>
+          </div>
+        </li>
+        <li class="infra-sim" aria-hidden="true"></li>
+        <li class="infra-frame">
+          <span class="infra-frame__label">UBUNTU VPS · WEBDOCK</span>
+          {% for node in infra_frame_nodes %}
+            {% if not forloop.first %}<span class="infra-sim" aria-hidden="true"></span>{% endif %}
+            <div class="infra-node">
+              <span class="infra-node__index" aria-hidden="true">{{ node.index }}</span>
+              <div class="infra-node__text">
+                <span class="infra-node__name">{{ node.name }}</span>
+                <span class="infra-node__sub">{{ node.sub }}</span>
+              </div>
+            </div>
+          {% endfor %}
+        </li>
+      </ol>
+
+      <div class="infra-columns">
+        <div>
+          <h3>API endpointlar / shu sayt</h3>
+          {% for endpoint in infra_endpoints %}
+            <div class="endpoint-row row-hover">
+              <span class="endpoint-row__method">{{ endpoint.method }}</span>
+              <span class="endpoint-row__path">{{ endpoint.path }}</span>
+              <span class="endpoint-row__note">{{ endpoint.note }}</span>
+            </div>
+          {% endfor %}
+        </div>
+        <div>
+          <h3>So'rov yo'li / log</h3>
+          {% for log in infra_logs %}
+            <div class="log-row">
+              <span class="log-row__who">{{ log.who }}</span>
+              <span class="log-row__msg">{{ log.msg }}</span>
+            </div>
+          {% endfor %}
+          <div class="log-prompt" aria-hidden="true">$ <span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

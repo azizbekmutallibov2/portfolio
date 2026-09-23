@@ -1,0 +1,61 @@
+{% load url_tags %}
+<section id="projects" class="section container" aria-labelledby="projects-heading">
+  <div class="section__grid">
+    <div class="section__label label">01 / LOYIHALAR</div>
+    <div class="section__content">
+      <h2 id="projects-heading" class="h2">Loyihalar</h2>
+      <p class="lead">
+        Har biri uchun: qanday muammo bor edi, nima qurdim va mening rolim nima.
+      </p>
+      {% if projects %}
+        <ol class="project-list">
+          {% for project in projects %}
+            <li class="project row-hover">
+              <div class="project__meta">
+                <div class="project__index-tag">
+                  <span class="project__index mono">{{ forloop.counter|stringformat:"02d" }}</span>
+                  <span class="tag">{{ project.get_tag_display }}</span>
+                </div>
+                <h3 class="project__title h3">{{ project.title }}</h3>
+              </div>
+              <div class="project__body">
+                <div class="project__field">
+                  <span class="label">MUAMMO</span>
+                  <p>{{ project.problem }}</p>
+                </div>
+                <div class="project__field">
+                  <span class="label">YECHIM</span>
+                  <p>{{ project.solution }}</p>
+                </div>
+                <div class="project__field">
+                  <span class="label">MENING ROLIM</span>
+                  <p>{{ project.role }}</p>
+                </div>
+                <div class="project__field project__field--stack">
+                  <span class="label">STACK</span>
+                  <p>{{ project.stack_items|join:" · " }}</p>
+                </div>
+              </div>
+              {% if project.repo_url or project.demo_url %}
+                <div class="project__links">
+                  {% if project.repo_url %}
+                    <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer">
+                      GitHub <span class="arrow" aria-hidden="true">→</span> {{ project.repo_url|display_url }}
+                    </a>
+                  {% endif %}
+                  {% if project.demo_url %}
+                    <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">
+                      Demo <span class="arrow" aria-hidden="true">→</span> {{ project.demo_url|display_url }}
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p class="project-list__empty">Loyihalar tez orada qo'shiladi.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>

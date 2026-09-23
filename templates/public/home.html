@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_attrs %} id="top"{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/public.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% include "public/partials/_header.html" %}
+  <main id="main">
+    {% include "public/partials/_hero.html" %}
+    {% include "public/partials/_projects.html" %}
+    {% include "public/partials/_stack.html" %}
+    {% include "public/partials/_infra.html" %}
+    {% include "public/partials/_education.html" %}
+    {% include "public/partials/_profiles.html" %}
+    {% include "public/partials/_contact.html" %}
+  </main>
+  {% include "public/partials/_footer.html" %}
+{% endblock %}

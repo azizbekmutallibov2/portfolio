@@ -1,0 +1,19 @@
+<section id="education" class="section container" aria-labelledby="education-heading">
+  <div class="section__grid">
+    <div class="section__label label">04 / TA'LIM</div>
+    <div class="section__content">
+      <h2 id="education-heading" class="h2">Ta'lim</h2>
+      <ol class="education-list">
+        {% for item in education %}
+          <li class="education-item row-hover">
+            <span class="education-item__when">{{ item.when }}</span>
+            <div>
+              <div class="education-item__title">{{ item.title }}</div>
+              <div class="education-item__sub">{{ item.sub }}</div>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+</section>
